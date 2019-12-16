@@ -1,3 +1,4 @@
+package src;
 /**
  * This class provides a convenient way to test shuffling methods.
  */
