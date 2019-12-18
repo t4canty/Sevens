@@ -1,11 +1,10 @@
-package src;
 
 /**
  * Card.java
  *
  * <code>Card</code> represents a playing card.
  */
-public class Card {
+public class Card implements Game{
 
 	/**
 	 * String value that holds the suit of the card
@@ -92,5 +91,12 @@ public class Card {
 	@Override
 	public String toString() {
 		return rank + " " + suit + " " + pointValue;
+	}
+
+
+	@Override
+	public void shuffle() {
+		// TODO Auto-generated method stub
+		
 	}
 }
