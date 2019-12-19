@@ -1,4 +1,4 @@
-import java.util.List;
+package src;
 import java.util.ArrayList;
 
 /**
@@ -44,7 +44,7 @@ public class Deck implements Game{
 	 * @return true if this deck is empty, false otherwise.
 	 */
 	public boolean isEmpty() {
-		if(size == 0){
+		if(size <= 0){
 			return true;
 		}else{
 			return false;
@@ -71,7 +71,7 @@ public class Deck implements Game{
 	 *         previously dealt.
 	 */
 	public Card deal() {
-		int tmp = size;
+		int tmp = size -1;
 		size--;
 		return cards.get(tmp);
 		
@@ -83,9 +83,9 @@ public class Deck implements Game{
 	 */
 	@Override
 	public String toString() {
-		String rtn = "size = " + size + "\nUndealt cards: \n";
+		String rtn = "size = " + (size) + "\nUndealt cards: \n";
 
-		for (int k = size - 1; k >= 0; k--) {
+		for (int k = size -1; k >= 0; k--) {
 			rtn = rtn + cards.get(k);
 			if (k != 0) {
 				rtn = rtn + ", ";
