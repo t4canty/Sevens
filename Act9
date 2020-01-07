@@ -1,0 +1,101 @@
+import java.util.List;
+import java.util.ArrayList;
+/**
+ * The ElevensBoard class represents the board in a game of Elevens.
+ */
+public class ElevensBoard extends Board{
+	/**
+	 * The size (number of cards) on the board.
+	 */
+	private static final int BOARD_SIZE = 9;
+	/**
+	 * The ranks of the cards for this game to be sent to the deck.
+	 */
+	private static final String[] RANKS =
+		{"ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "jack", "queen", "king"};
+	/**
+	 * The suits of the cards for this game to be sent to the deck.
+	 */
+	private static final String[] SUITS =
+		{"spades", "hearts", "diamonds", "clubs"};
+	/**
+	 * The values of the cards for this game to be sent to the deck.
+	 */
+	private static final int[] POINT_VALUES =
+		{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 0, 0, 0};
+	/**
+	 * Flag used to control debugging print statements.
+	 */
+	private static final boolean I_AM_DEBUGGING = true;
+	/**
+	 * Creates a new <code>ElevensBoard</code> instance.
+	 */
+	public ElevensBoard() {
+		super(BOARD_SIZE, RANKS, SUITS, POINT_VALUES);
+	}
+	/**
+	 * Determines if the selected cards form a valid group for removal.
+	 * In Elevens, the legal groups are (1) a pair of non-face cards
+	 * whose values add to 11, and (2) a group of three cards consisting of
+	 * a jack, a queen, and a king in some order.
+	 * @param selectedCards the list of the indices of the selected cards.
+	 * @return true if the selected cards form a valid group for removal;
+	 *         false otherwise.
+	 */
+	
+	@Override
+	public boolean isLegal(List<Integer> selectedCards) {
+		List<Card> selectedCardsc = new ArrayList<Card>();
+		for(int i = 0; i < selectedCards.size(); i++) {
+			selectedCardsc.add(super.cardAt(selectedCards.get(i)));
+		}
+		if(selectedCards.size() < 2) {return false;}
+		System.out.println(hasRoyalty(selectedCardsc));
+		return isEleven(selectedCardsc) || hasRoyalty(selectedCardsc);
+	}
+	/**
+	 * Determine if there are any legal plays left on the board.
+	 * In Elevens, there is a legal play if the board contains
+	 * (1) a pair of non-face cards whose values add to 11, or (2) a group
+	 * of three cards consisting of a jack, a queen, and a king in some order.
+	 * @return true if there is a legal play left on the board;
+	 *         false otherwise.
+	 */
+	@Override
+	public boolean anotherPlayIsPossible() {
+		ArrayList<Card> currentBoard = new ArrayList<Card>();
+		for(int i = 0; i < BOARD_SIZE; i++) {
+			currentBoard.add(super.cardAt(i));
+		}
+		System.out.println("board" + hasRoyalty(currentBoard));
+		return isEleven(currentBoard)  || hasRoyalty(currentBoard);
+	}
+	private boolean isEleven(List<Card> selectedCards) {
+		for(int i = 0; i < selectedCards.size(); i++) {
+			for(int k =0; k<selectedCards.size(); k++) {
+				if(selectedCards.get(i).pointValue() + selectedCards.get(k).pointValue() == 11 && k != i) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	private boolean isRoyalty(String rank) {
+		if(rank.equals("king") || rank.equals("queen") || rank.equals("jack")) {
+			return true;
+		}
+		else { return false;}
+	}
+	private boolean hasRoyalty(List<Card> selectedCards) {
+		System.out.println("Deck size:" + selectedCards.size());
+		if(selectedCards.size() < 3) {
+			return false;
+		}
+		for(int i = 0; i < selectedCards.size()-2; i++) {
+			if(isRoyalty(selectedCards.get(i).rank()) && isRoyalty(selectedCards.get(i+1).rank()) && isRoyalty(selectedCards.get(i+2).rank())) {
+				return true;
+			}
+		}
+		return false;
+	}
+}
